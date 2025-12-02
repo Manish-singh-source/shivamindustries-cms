@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Quote Form Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            text-align: center;
+            color: #007bff;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>🧪 Quote Form Test</h2>
+
+    <div id="result"></div>
+
+    <form id="quoteTestForm">
+        <div class="form-group">
+            <label>First Name *</label>
+            <input type="text" name="firstname" required>
+        </div>
+
+        <div class="form-group">
+            <label>Last Name *</label>
+            <input type="text" name="lastname" required>
+        </div>
+
+        <div class="form-group">
+            <label>Email *</label>
+            <input type="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label>Phone *</label>
+            <input type="text" name="phone" required>
+        </div>
+
+        <div class="form-group">
+            <label>Company</label>
+            <input type="text" name="company">
+        </div>
+
+        <div class="form-group">
+            <label>Address</label>
+            <input type="text" name="address">
+        </div>
+
+        <div class="form-group">
+            <label>Product *</label>
+            <input type="text" name="product" value="Crotonaldehyde" required>
+        </div>
+
+        <div class="form-group">
+            <label>Quantity *</label>
+            <input type="text" name="quantity" required>
+        </div>
+
+        <input type="hidden" name="product_image" value="img/products/crotonaldehyde.png">
+
+        <button type="submit">Submit Quote Request</button>
+    </form>
+
+    <script>
+        $(document).ready(function () {
+            console.log('jQuery loaded successfully');
+            console.log('Form found:', $('#quoteTestForm').length);
+
+            $('#quoteTestForm').on('submit', function (e) {
+                e.preventDefault();
+                console.log('Form submitted!');
+
+                var formData = $(this).serialize();
+                console.log('Form data:', formData);
+
+                var $result = $('#result');
+                $result.removeClass('success error').addClass('loading').html('⏳ Sending request...').show();
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'quote-handler-simple.php',
+                    data: formData,
+                    dataType: 'json',
+                    success: function (response) {
+                        console.log('Success response:', response);
+
+                        if (response.status === 'success') {
+                            $result.removeClass('loading').addClass('success');
+                            $result.html('✅ ' + response.message);
+
+                            // Clear form
+                            $('#quoteTestForm')[0].reset();
+                        } else {
+                            $result.removeClass('loading').addClass('error');
+                            $result.html('❌ ' + response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('AJAX Error:', error);
+                        console.log('Status:', status);
+                        console.log('Response Text:', xhr.responseText);
+
+                        $result.removeClass('loading').addClass('error');
+                        $result.html('❌ Error: ' + error + '<br><br><strong>Response:</strong><br>' + xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

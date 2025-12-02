@@ -1,0 +1,5 @@
+id,name,email,password,role,created_at,status
+1,Admin,"admin@shivaindustries.com","$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",admin,"2025-12-01 00:00:00",1
+
+2,"Shivam Industries",sales@shivaminds.com,$2y$10$5Kihu5QFnHuCro7mG4Co6uos0dYKZ7qiQA9gm47szpx0TcpXLgNLG,user,"2025-12-01 11:35:35",1
+3,"Technofra Company",support@technofra.com,$2y$10$aNsydqPZeopX0SLELk1xheKdeLNPzzC/XD6wtL/cqPP8t0XoYDvT6,user,"2025-12-02 10:59:11",1
